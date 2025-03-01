@@ -1,0 +1,21 @@
+{
+  "name": "authserver",
+  "version": "0.0.0",
+  "description": "Authentication Server to create Zoom Meeting SDK JWT Signature",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "author": "Josh Aiken",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "jsrsasign": "^11.1.0"
+  }
+}
