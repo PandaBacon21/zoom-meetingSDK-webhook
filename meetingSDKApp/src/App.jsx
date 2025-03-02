@@ -1,7 +1,10 @@
 import { Box } from "@mui/material";
+import { io } from "socket.io-client";
 
 import ManualMeeting from "./components/ManualMeeting";
 import Webhook from "./components/Webhook";
+
+const socket = io("http://localhost:3000/");
 
 function App() {
   return (
@@ -18,7 +21,7 @@ function App() {
         }}
       >
         <ManualMeeting />
-        <Webhook />
+        <Webhook socket={socket} />
       </Box>
     </>
   );

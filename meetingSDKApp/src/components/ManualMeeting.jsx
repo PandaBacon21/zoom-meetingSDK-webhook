@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Box, Paper, Typography } from "@mui/material";
+import { Paper, Typography } from "@mui/material";
 import MeetingInput from "./MeetingInput";
 import Zoom from "./Zoom";
 

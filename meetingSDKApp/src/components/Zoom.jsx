@@ -14,7 +14,7 @@ const SDKKEY = import.meta.env.VITE_ZOOM_CLIENT_ID;
 const LEAVEURL = import.meta.env.VITE_LEAVE_URL;
 
 const Zoom = ({ userName, meetingId, password, clearInputs, sx }) => {
-  const authEndpoint = "/api";
+  const authEndpoint = "/api/token";
   const sdkKey = SDKKEY;
   const role = 0;
   //   const userEmail = "";
@@ -75,6 +75,7 @@ const Zoom = ({ userName, meetingId, password, clearInputs, sx }) => {
       <Button
         sx={{ borderRadius: 2 }}
         variant="contained"
+        size="large"
         onClick={joinMeeting}
       >
         <Typography>Join Meeting</Typography>

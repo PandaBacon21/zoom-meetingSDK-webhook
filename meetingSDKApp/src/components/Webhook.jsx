@@ -1,6 +1,23 @@
-import { Box, Paper, Typography } from "@mui/material";
+import { useState, useEffect } from "react";
+import { Paper, Typography } from "@mui/material";
 
-const Webhook = () => {
+const Webhook = ({ socket }) => {
+  const [webhookData, setWebhookData] = useState(null);
+
+  useEffect(() => {
+    socket.on("webhookEvent", (data) => {
+      console.log("received webhook:", data);
+      if (data.event === "meeting.started") {
+        setWebhookData(data);
+      } else if (data.event === "meeting.ended") {
+        setWebhookData(null);
+      }
+    });
+    return () => {
+      socket.off("webhookEvent");
+    };
+  });
+
   return (
     <Paper
       elevation={3}
@@ -30,7 +47,13 @@ const Webhook = () => {
           borderRadius: 2,
           textAlign: "center",
         }}
-      ></Paper>
+      >
+        {webhookData ? (
+          <Typography variant="h3">
+            Meeting ID: {webhookData.payload.object.id}
+          </Typography>
+        ) : null}
+      </Paper>
     </Paper>
   );
 };
