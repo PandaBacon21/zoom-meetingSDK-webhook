@@ -1,28 +1,21 @@
-import { Box } from "@mui/material";
+import { Route, Routes } from "react-router-dom";
+
 import { io } from "socket.io-client";
 
-import ManualMeeting from "./components/ManualMeeting";
-import Webhook from "./components/Webhook";
+import Dashboard from "./pages/Dashboard";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 const socket = io("http://localhost:3000/");
 
 function App() {
   return (
     <>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          flexWrap: "wrap",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: 15,
-          height: "100vh",
-        }}
-      >
-        <ManualMeeting />
-        <Webhook socket={socket} />
-      </Box>
+      <Routes>
+        <Route path="/" element={<Dashboard socket={socket} />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
     </>
   );
 }
