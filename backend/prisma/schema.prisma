@@ -1,0 +1,29 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int     @id @default(autoincrement())
+  email     String  @unique
+  password  String
+  zoomAuth  Boolean @default(false)
+  tokenId   Int?    // Can be null until a token is assigned
+
+  token     Token?  @relation()
+}
+
+model Token {
+  id              Int       @id @default(autoincrement())
+  accessToken     String 
+  accessExpires   DateTime  
+  refreshToken    String
+  refreshExpires  DateTime
+  userId          Int       @unique
+
+  user            User      @relation(fields: [userId], references: [id])
+}

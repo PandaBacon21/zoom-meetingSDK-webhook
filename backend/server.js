@@ -6,7 +6,13 @@ import http from "http";
 import { KJUR } from "jsrsasign";
 import { Server } from "socket.io";
 
+import { UserModel } from "./models/models.js";
+
 dotenv.config();
+
+const CLIENT_ID = process.env.ZOOM_CLIENT_ID;
+const CLIENT_SECRET = process.env.ZOOM_CLIENT_SECRET;
+const WEBHOOK_SECRET = process.env.ZOOM_WEBHOOK_SECRET;
 
 const app = express();
 const server = http.createServer(app);
@@ -37,11 +43,14 @@ server.listen(port, () => {
   console.log(`Server running on localhost:${port}`);
 });
 
-const CLIENT_ID = process.env.ZOOM_CLIENT_ID;
-const CLIENT_SECRET = process.env.ZOOM_CLIENT_SECRET;
-const WEBHOOK_SECRET = process.env.ZOOM_WEBHOOK_SECRET;
+io.on("connection", (socket) => {
+  console.log("client connected:", socket.id);
+  socket.on("disconnect", () => {
+    console.log("client disconnected:", socket.id);
+  });
+});
 
-app.post("/api/token", (req, res) => {
+app.post("/api/zoom-token", (req, res) => {
   // probably need to move into it's own utility function later to clean up the endpoint
   const { meetingNumber, role } = req.body;
 
@@ -99,9 +108,37 @@ app.post("/api/webhook", (req, res) => {
   }
 });
 
-io.on("connection", (socket) => {
-  console.log("client connected:", socket.id);
-  socket.on("disconnect", () => {
-    console.log("client disconnected:", socket.id);
-  });
+app.post("/api/register", async (req, res) => {
+  const { email, password } = req.body;
+  const user = await UserModel.getUser(email);
+  if (user) {
+    res.status(400).send({ error: "User already exists" });
+    console.log(`user ${email} already exists`);
+  } else {
+    try {
+      const newUser = await UserModel.createUser(email, password);
+      console.log(newUser);
+      res.status(201).send({ status: "success", user: newUser });
+    } catch (e) {
+      console.log(e);
+      res.status(500).send({ error: "Internal Server Error" });
+    }
+  }
+});
+
+app.post("/api/login", async (req, res) => {
+  const { email, password } = req.body;
+  const user = await UserModel.getUser(email);
+  if (!user) {
+    res.status(404).send({ error: "User not found" });
+  } else {
+    try {
+      const authUser = UserModel.authenticate(email, password);
+      console.log(authUser);
+      res.status(200).send({ status: "success" });
+    } catch (e) {
+      console.log(e);
+      res.status(500).send({ error: "Internal Server Error" });
+    }
+  }
 });

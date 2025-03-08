@@ -1,9 +1,13 @@
+import { io } from "socket.io-client";
+
 import { Box } from "@mui/material";
 
 import ManualMeeting from "./components/ManualMeeting";
 import Webhook from "./components/Webhook";
 
-const Dashboard = ({ socket }) => {
+const socket = io("http://localhost:3000/");
+
+const Dashboard = () => {
   return (
     <>
       <Box

@@ -26,3 +26,8 @@ build
 *.njsproj
 *.sln
 *.sw?
+
+
+backend/prisma/migrations/
+backend/prisma/sqlite-dev.db
+backend/prisma/sqlite-dev.db-journal

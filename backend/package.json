@@ -1,5 +1,5 @@
 {
-  "name": "authserver",
+  "name": "server",
   "version": "0.0.0",
   "description": "Authentication Server to create Zoom Meeting SDK JWT Signature",
   "main": "server.js",
@@ -15,6 +15,8 @@
     "nodemon": "^3.1.9"
   },
   "dependencies": {
+    "@prisma/client": "^6.4.1",
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.4.7",
     "jsrsasign": "^11.1.0",
     "socket.io": "^4.8.1"

@@ -1,14 +1,46 @@
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+
 import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 
 import SessionToken from "./components/SessionToken";
+import { useState } from "react";
 
 const Login = () => {
   const navigate = useNavigate();
 
-  const saveToken = () => {
-    SessionToken.saveToken("taco");
-    navigate("/");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  // Could add data validation
+  const logInUser = async (event) => {
+    if (email.length === 0) {
+      alert("Email cannot be left blank!");
+    } else if (password.length === 0) {
+      alert("Password cannot be left blank!");
+    } else {
+      try {
+        const res = await axios({
+          method: "post",
+          url: "api/login",
+          headers: { "Content-Type": "application/json" },
+          data: JSON.stringify({
+            email: email,
+            password: password,
+          }),
+        });
+        console.log(res.data);
+        // SessionToken.saveToken(res.data.token);
+        navigate("/dashboard");
+      } catch (e) {
+        console.log(e.response.data);
+        if (e.response.data) {
+          alert(`An error occurred: ${e.response.data.error}`);
+        } else {
+          alert("An error occurred");
+        }
+      }
+    }
   };
 
   return (
@@ -58,14 +90,17 @@ const Login = () => {
               label="Email"
               variant="filled"
               sx={{ margin: 3 }}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <TextField
               id="password"
               label="Password"
+              type="password"
               variant="filled"
               sx={{ margin: 3 }}
+              onChange={(e) => setPassword(e.target.value)}
             />
-            <Button variant="contained" size="large">
+            <Button variant="contained" size="large" onClick={logInUser}>
               Login
             </Button>
             <Box sx={{ marginTop: 7 }}>
