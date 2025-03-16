@@ -5,6 +5,7 @@ import cors from "cors";
 import http from "http";
 import { KJUR } from "jsrsasign";
 import { Server } from "socket.io";
+import jwt from "jsonwebtoken";
 
 import { UserModel } from "./models/models.js";
 
@@ -13,6 +14,7 @@ dotenv.config();
 const CLIENT_ID = process.env.ZOOM_CLIENT_ID;
 const CLIENT_SECRET = process.env.ZOOM_CLIENT_SECRET;
 const WEBHOOK_SECRET = process.env.ZOOM_WEBHOOK_SECRET;
+const SESSION_SECRET = process.env.SESSION_SECRET;
 
 const app = express();
 const server = http.createServer(app);
@@ -79,7 +81,7 @@ app.post("/api/zoom-token", (req, res) => {
   const sdkKey = KJUR.jws.JWS.sign("HS256", sHeader, sPayload, secret);
   const signatureResponse = { signature: sdkKey };
   console.log("Signature created");
-  res.send(signatureResponse);
+  return res.send(signatureResponse);
 });
 
 app.post("/api/webhook", (req, res) => {
@@ -99,12 +101,14 @@ app.post("/api/webhook", (req, res) => {
 
     io.emit("webhookEvent", req.body);
 
-    res.status(200).send({ status: "success" });
+    return res.status(200).send({ status: "success" });
   } else {
     console.log("verification failed");
     console.log(req.headers["x-zm-signature"]);
     console.log(signature);
-    res.status(401).send({ status: "error", message: "Invalid signature" });
+    return res
+      .status(401)
+      .send({ status: "error", message: "Invalid signature" });
   }
 });
 
@@ -112,16 +116,24 @@ app.post("/api/register", async (req, res) => {
   const { email, password } = req.body;
   const user = await UserModel.getUser(email);
   if (user) {
-    res.status(400).send({ error: "User already exists" });
-    console.log(`user ${email} already exists`);
+    console.log({ status: 400, message: `user ${email} already exists` });
+    return res.status(400).send({ error: "User already exists" });
   } else {
     try {
       const newUser = await UserModel.createUser(email, password);
-      console.log(newUser);
-      res.status(201).send({ status: "success", user: newUser });
+      if (newUser) {
+        console.log({ status: 201, user: newUser });
+        return res.status(201).send({
+          status: "success",
+          token: "taco",
+          zoomAuth: newUser.zoomAuth,
+        });
+      }
     } catch (e) {
       console.log(e);
-      res.status(500).send({ error: "Internal Server Error" });
+      return res
+        .status(500)
+        .send({ status: "error", message: "Internal Server Error" });
     }
   }
 });
@@ -130,15 +142,37 @@ app.post("/api/login", async (req, res) => {
   const { email, password } = req.body;
   const user = await UserModel.getUser(email);
   if (!user) {
-    res.status(404).send({ error: "User not found" });
+    res.status(404).send({ status: "error", message: "User not found" });
   } else {
     try {
-      const authUser = UserModel.authenticate(email, password);
-      console.log(authUser);
-      res.status(200).send({ status: "success" });
+      const authUser = await UserModel.authenticate(email, password);
+      if (!authUser) {
+        console.log({ status: 401, user: email, message: "Invalid password" });
+        return res
+          .status(401)
+          .send({ status: "error", message: "Invalid email or password" });
+      }
+      const sessionToken = jwt.sign(
+        { userId: authUser.id, email: authUser.email },
+        SESSION_SECRET,
+        { expiresIn: "1h" }
+      );
+      res.cookie("token", sessionToken, {
+        // httpOnly: true,
+        secure: true,
+        sameSite: "None",
+        maxAge: 3600000,
+      });
+      console.log({ status: 200, user: authUser.email, message: "success" });
+      return res.status(200).send({
+        status: "success",
+        data: { token: sessionToken, zoomAuth: authUser.zoomAuth },
+      });
     } catch (e) {
       console.log(e);
-      res.status(500).send({ error: "Internal Server Error" });
+      return res
+        .status(500)
+        .send({ status: "error", message: "Internal Server Error" });
     }
   }
 });

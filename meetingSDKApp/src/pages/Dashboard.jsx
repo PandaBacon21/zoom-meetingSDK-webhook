@@ -4,10 +4,11 @@ import { Box } from "@mui/material";
 
 import ManualMeeting from "./components/ManualMeeting";
 import Webhook from "./components/Webhook";
+import GetZoomAuth from "./components/GetZoomAuth";
 
 const socket = io("http://localhost:3000/");
 
-const Dashboard = () => {
+const Dashboard = ({ zoomAuth, setZoomAuth }) => {
   return (
     <>
       <Box
@@ -21,8 +22,14 @@ const Dashboard = () => {
           height: "100vh",
         }}
       >
-        <ManualMeeting />
-        <Webhook socket={socket} />
+        {zoomAuth ? (
+          <>
+            <ManualMeeting />
+            <Webhook socket={socket} />
+          </>
+        ) : (
+          <GetZoomAuth />
+        )}
       </Box>
     </>
   );

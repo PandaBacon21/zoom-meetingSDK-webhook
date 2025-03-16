@@ -1,25 +1,29 @@
-import { Route, Routes } from "react-router-dom";
-
+import { Navigate, Route, Routes } from "react-router-dom";
+import { useState } from "react";
+import { AuthProvider } from "./context/AuthContext";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import PrivateRoutes from "./pages/components/PrivateRoutes";
-import SessionToken from "./pages/components/SessionToken";
 
-function App() {
-  const token = SessionToken.getToken();
+export default function App() {
+  const [zoomAuth, setZoomAuth] = useState(false);
 
   return (
-    <>
+    <AuthProvider>
       <Routes>
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Navigate to="/dashboard" />} />
+        <Route path="/login" element={<Login setZoomAuth={setZoomAuth} />} />
         <Route path="/register" element={<Register />} />
-        <Route element={<PrivateRoutes token={token} />}>
-          <Route path="/dashboard" element={<Dashboard />} />
-        </Route>
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoutes>
+              <Dashboard zoomAuth={zoomAuth} setZoomAuth={setZoomAuth} />
+            </PrivateRoutes>
+          }
+        />
       </Routes>
-    </>
+    </AuthProvider>
   );
 }
-
-export default App;

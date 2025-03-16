@@ -2,15 +2,18 @@ import { Link, useNavigate } from "react-router-dom";
 import { Box, Typography, Paper, TextField, Button } from "@mui/material";
 import { useState } from "react";
 import axios from "axios";
-import SessionToken from "./components/SessionToken";
 
 const Register = () => {
   const navigate = useNavigate();
+  const { updateAuthState } = useAuth();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordVerify, setPasswordVerify] = useState("");
 
   const registerUser = async (event) => {
+    event.preventDefault();
+
     if (email.length === 0) {
       alert("Email cannot be left blank!");
     } else if (password.length === 0) {
@@ -30,8 +33,11 @@ const Register = () => {
           }),
         });
         console.log(res.data);
-        SessionToken.saveToken(res.data.token);
-        navigate("/dashboard");
+        updateAuthState();
+        if (res.status === 201) {
+          console.log("navigating to /dashboard");
+          navigate("/dashboard");
+        }
       } catch (e) {
         console.log(e.response.data);
         if (e.response.data) {

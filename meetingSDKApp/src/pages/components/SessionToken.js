@@ -1,21 +1,27 @@
-class SessionToken {
-  constructor() {
-    this.token = this.getToken();
-  }
+import { useState } from "react";
 
-  getToken() {
-    return localStorage.getItem("token") || null;
-  }
+export default function SessionToken() {
+  const getToken = () => {
+    const userToken = localStorage.getItem("token");
+    return userToken && userToken;
+  };
 
-  saveToken(userToken) {
+  const [token, setToken] = useState(getToken());
+
+  const saveToken = (userToken) => {
     localStorage.setItem("token", userToken);
-    this.token = userToken;
-  }
+    setToken(userToken);
+    console.log("token saved");
+  };
 
-  removeToken() {
+  const removeToken = () => {
     localStorage.removeItem("token");
-    this.token = null;
-  }
-}
+    setToken(null);
+  };
 
-export default new SessionToken();
+  return {
+    setToken: saveToken,
+    token,
+    removeToken,
+  };
+}

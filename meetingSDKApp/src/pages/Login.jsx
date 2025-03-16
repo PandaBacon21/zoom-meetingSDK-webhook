@@ -1,19 +1,25 @@
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-
-import { Box, Button, Paper, TextField, Typography } from "@mui/material";
-
-import SessionToken from "./components/SessionToken";
 import { useState } from "react";
+import axios from "axios";
+import { Box, Button, Paper, TextField, Typography } from "@mui/material";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { updateAuthState, isAuthenticated } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  if (isAuthenticated) {
+    navigate("/dashboard");
+    return null;
+  }
+
   // Could add data validation
   const logInUser = async (event) => {
+    event.preventDefault();
+
     if (email.length === 0) {
       alert("Email cannot be left blank!");
     } else if (password.length === 0) {
@@ -28,14 +34,19 @@ const Login = () => {
             email: email,
             password: password,
           }),
+          withCredentials: true,
         });
         console.log(res.data);
-        // SessionToken.saveToken(res.data.token);
-        navigate("/dashboard");
+        updateAuthState();
+        console.log(res.status);
+        if (res.status === 200) {
+          console.log("navigating to /dashboard");
+          navigate("/dashboard");
+        }
       } catch (e) {
         console.log(e.response.data);
         if (e.response.data) {
-          alert(`An error occurred: ${e.response.data.error}`);
+          alert(`An error occurred: ${e.response.data.message}`);
         } else {
           alert("An error occurred");
         }
