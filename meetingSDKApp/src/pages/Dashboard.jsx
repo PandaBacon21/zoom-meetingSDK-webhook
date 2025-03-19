@@ -3,14 +3,16 @@ import { io } from "socket.io-client";
 import { Box } from "@mui/material";
 
 import ManualMeeting from "./components/ManualMeeting";
-import Webhook from "./components/Webhook";
+import CurrentMeetings from "./components/CurrentMeetings";
 import GetZoomAuth from "./components/GetZoomAuth";
+import NavBar from "./components/NavBar";
 
 const socket = io("http://localhost:3000/");
 
 const Dashboard = ({ zoomAuth, setZoomAuth }) => {
   return (
     <>
+      <NavBar />
       <Box
         sx={{
           display: "flex",
@@ -25,7 +27,7 @@ const Dashboard = ({ zoomAuth, setZoomAuth }) => {
         {zoomAuth ? (
           <>
             <ManualMeeting />
-            <Webhook socket={socket} />
+            <CurrentMeetings socket={socket} />
           </>
         ) : (
           <GetZoomAuth />

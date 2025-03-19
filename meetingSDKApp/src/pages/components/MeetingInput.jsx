@@ -1,6 +1,6 @@
 import { TextField } from "@mui/material";
 
-const MeetingInput = ({
+export default function MeetingInput({
   userName,
   meetingId,
   password,
@@ -8,7 +8,7 @@ const MeetingInput = ({
   setMeetingId,
   setPassword,
   sx,
-}) => {
+}) {
   return (
     <>
       <TextField
@@ -43,6 +43,4 @@ const MeetingInput = ({
       />
     </>
   );
-};
-
-export default MeetingInput;
+}

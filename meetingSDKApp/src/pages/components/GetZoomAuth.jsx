@@ -1,6 +1,6 @@
 import { Paper, Box, Typography, Button } from "@mui/material";
 
-const ZOOMAUTHURL = import.meta.env.VITE_ZOOM_AUTH_URL;
+const ZOOM_AUTH_URL = import.meta.env.VITE_ZOOM_AUTH_URL;
 
 export default function GetZoomAuth() {
   return (
@@ -38,7 +38,7 @@ export default function GetZoomAuth() {
           <Button
             variant="contained"
             size="large"
-            onClick={() => (window.location.href = ZOOMAUTHURL)}
+            onClick={() => (window.location.href = ZOOM_AUTH_URL)}
           >
             Authorize
           </Button>

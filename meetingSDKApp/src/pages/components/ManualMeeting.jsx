@@ -3,7 +3,7 @@ import { Paper, Typography } from "@mui/material";
 import MeetingInput from "./MeetingInput";
 import Zoom from "./Zoom";
 
-const ManualMeeting = () => {
+export default function ManualMeeting() {
   const [userName, setUserName] = useState("");
   const [meetingId, setMeetingId] = useState("");
   const [password, setPassword] = useState("");
@@ -21,7 +21,9 @@ const ManualMeeting = () => {
         sx={{
           padding: 4,
           margin: 2,
-          width: 600,
+          width: "100%",
+          maxWidth: 600,
+          minWidth: 400,
           minHeight: 400,
           maxHeight: 600,
           textAlign: "center",
@@ -50,6 +52,4 @@ const ManualMeeting = () => {
       </Paper>
     </>
   );
-};
-
-export default ManualMeeting;
+}

@@ -122,11 +122,22 @@ app.post("/api/register", async (req, res) => {
     try {
       const newUser = await UserModel.createUser(email, password);
       if (newUser) {
-        console.log({ status: 201, user: newUser });
+        const sessionToken = jwt.sign(
+          { userId: newUser.id, user: newUser.email },
+          SESSION_SECRET,
+          { expiresIn: "1h" }
+        );
+        res.cookie("token", sessionToken, {
+          // httpOnly: true,
+          secure: true,
+          sameSite: "None",
+          maxAge: 3600000,
+          path: "/",
+        });
+        console.log({ status: 201, user: newUser.email, message: "success" });
         return res.status(201).send({
           status: "success",
-          token: "taco",
-          zoomAuth: newUser.zoomAuth,
+          data: { zoomAuth: newUser.zoomAuth },
         });
       }
     } catch (e) {
@@ -162,11 +173,12 @@ app.post("/api/login", async (req, res) => {
         secure: true,
         sameSite: "None",
         maxAge: 3600000,
+        path: "/",
       });
       console.log({ status: 200, user: authUser.email, message: "success" });
       return res.status(200).send({
         status: "success",
-        data: { token: sessionToken, zoomAuth: authUser.zoomAuth },
+        data: { zoomAuth: authUser.zoomAuth },
       });
     } catch (e) {
       console.log(e);

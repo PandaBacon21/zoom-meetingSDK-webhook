@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Paper, Typography } from "@mui/material";
 
-const Webhook = ({ socket }) => {
+export default function CurrentMeetings({ socket }) {
   const [webhookData, setWebhookData] = useState(null);
 
   useEffect(() => {
@@ -24,7 +24,9 @@ const Webhook = ({ socket }) => {
       sx={{
         padding: 4,
         margin: 2,
-        width: 600,
+        width: "100%",
+        maxWidth: 600,
+        minWidth: 400,
         minHeight: 400,
         maxHeight: 300,
         textAlign: "center",
@@ -36,11 +38,13 @@ const Webhook = ({ socket }) => {
       }}
     >
       <Typography variant="h2" sx={{ fontWeight: "bold", marginBottom: 2 }}>
-        Receive Webhook
+        Current Active Meetings
       </Typography>
       <Paper
         sx={{
-          width: 500,
+          width: "100%",
+          maxWidth: 500,
+          minWidth: 300,
           height: 300,
           backgroundColor: "#f5f5f5",
           boxShadow: "inset 0px 2px 10px rgba(0, 0, 0, 0.1)",
@@ -56,6 +60,4 @@ const Webhook = ({ socket }) => {
       </Paper>
     </Paper>
   );
-};
-
-export default Webhook;
+}

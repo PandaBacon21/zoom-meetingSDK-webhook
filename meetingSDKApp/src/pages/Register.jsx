@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Box, Typography, Paper, TextField, Button } from "@mui/material";
 import { useState } from "react";
 import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
 const Register = () => {
   const navigate = useNavigate();
