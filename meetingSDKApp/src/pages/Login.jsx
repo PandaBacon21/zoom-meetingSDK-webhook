@@ -3,10 +3,12 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import { useAuth } from "../context/AuthContext";
+import { useZoomAuth } from "../context/ZoomContext";
 
 const Login = () => {
   const navigate = useNavigate();
   const { updateAuthState, isAuthenticated } = useAuth();
+  const { updateZoomAuthState } = useZoomAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -39,6 +41,8 @@ const Login = () => {
         });
         console.log(res.data);
         updateAuthState();
+        updateZoomAuthState(res.data.data.zoomAuth);
+        // console.log(res.data.data.zoomAuth);
         console.log(res.status);
         if (res.status === 200) {
           console.log("navigating to /dashboard");

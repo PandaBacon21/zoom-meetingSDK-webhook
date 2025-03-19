@@ -1,11 +1,13 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import Cookies from "js-cookie";
+import { useZoomAuth } from "./ZoomContext";
 
 const AuthContext = createContext(null);
 
-export const AuthProvider = ({ children }) => {
+export function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const { updateZoomAuthState } = useZoomAuth();
 
   const checkAuth = () => {
     setIsLoading(true);
@@ -24,6 +26,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     Cookies.remove("token");
+    updateZoomAuthState(false);
     setIsAuthenticated(false);
   };
 
@@ -40,12 +43,12 @@ export const AuthProvider = ({ children }) => {
       {children}
     </AuthContext.Provider>
   );
-};
+}
 
-export const useAuth = () => {
+export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) {
     throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
-};
+}

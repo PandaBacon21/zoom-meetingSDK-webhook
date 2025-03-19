@@ -14,7 +14,7 @@ const SDKKEY = import.meta.env.VITE_ZOOM_CLIENT_ID;
 const LEAVEURL = import.meta.env.VITE_LEAVE_URL;
 
 const Zoom = ({ userName, meetingId, password, clearInputs, sx }) => {
-  const authEndpoint = "/api/zoom-token";
+  const authEndpoint = "/api/zoom-sdk-token";
   const sdkKey = SDKKEY;
   const role = 0;
   //   const userEmail = "";

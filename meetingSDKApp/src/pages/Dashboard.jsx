@@ -6,10 +6,13 @@ import ManualMeeting from "./components/ManualMeeting";
 import CurrentMeetings from "./components/CurrentMeetings";
 import GetZoomAuth from "./components/GetZoomAuth";
 import NavBar from "./components/NavBar";
+import { useZoomAuth } from "../context/ZoomContext";
 
 const socket = io("http://localhost:3000/");
 
-const Dashboard = ({ zoomAuth, setZoomAuth }) => {
+const Dashboard = () => {
+  const { zoomAuthenticated } = useZoomAuth();
+
   return (
     <>
       <NavBar />
@@ -24,7 +27,7 @@ const Dashboard = ({ zoomAuth, setZoomAuth }) => {
           height: "100vh",
         }}
       >
-        {zoomAuth ? (
+        {zoomAuthenticated ? (
           <>
             <ManualMeeting />
             <CurrentMeetings socket={socket} />

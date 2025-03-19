@@ -24,7 +24,7 @@ app.use(
   cors({
     origin: [
       "http: //localhost:5173",
-      "https://pangolin-related-mildly.ngrok-free.app", // Add your Ngrok URL
+      "https://pangolin-related-mildly.ngrok-free.app", // Ngrok URL
     ],
     credentials: true,
   })
@@ -34,7 +34,7 @@ const io = new Server(server, {
   cors: {
     origin: [
       "http: //localhost:5173",
-      "https://pangolin-related-mildly.ngrok-free.app", // Add your Ngrok URL
+      "https://pangolin-related-mildly.ngrok-free.app", // Ngrok URL
     ],
     methods: ["GET", "POST"],
   },
@@ -52,7 +52,22 @@ io.on("connection", (socket) => {
   });
 });
 
-app.post("/api/zoom-token", (req, res) => {
+// UPDATE TO ACTUALLY RETRIEVE AND STORE ZOOM AUTH TOKEN
+
+app.post("/api/zoom-auth-token", async (req, res) => {
+  console.log(req.body);
+  if (req.body) {
+    res
+      .status(200)
+      .send({ status: "success", message: "Zoom successfully authorized" });
+  } else {
+    return res
+      .status(500)
+      .send({ status: "error", message: "Internal Server Error" });
+  }
+});
+
+app.post("/api/zoom-sdk-token", (req, res) => {
   // probably need to move into it's own utility function later to clean up the endpoint
   const { meetingNumber, role } = req.body;
 
