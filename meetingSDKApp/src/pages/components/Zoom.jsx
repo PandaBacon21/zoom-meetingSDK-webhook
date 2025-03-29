@@ -2,18 +2,26 @@ import axios from "axios";
 import { ZoomMtg } from "@zoom/meetingsdk";
 import { Box, Button, Typography } from "@mui/material";
 
-ZoomMtg.preLoadWasm();
-ZoomMtg.prepareWebSDK();
+// ZoomMtg.preLoadWasm();
+// ZoomMtg.prepareWebSDK();
 
-ZoomMtg.i18n.load("en-US");
+// ZoomMtg.i18n.load("en-US");
 
-const zoomMeetingSDK = document.getElementById("zmmtg-root");
-zoomMeetingSDK.style.display = "none";
+// const zoomMeetingSDK = document.getElementById("zmmtg-root");
+
+// zoomMeetingSDK.style.display = "none";
 
 const SDKKEY = import.meta.env.VITE_ZOOM_CLIENT_ID;
 const LEAVEURL = import.meta.env.VITE_LEAVE_URL;
 
-const Zoom = ({ userName, meetingId, password, clearInputs, sx }) => {
+const Zoom = ({
+  userName,
+  meetingId,
+  password,
+  signature,
+  clearInputs,
+  sx,
+}) => {
   const authEndpoint = "/api/zoom-sdk-token";
   const sdkKey = SDKKEY;
   const role = 0;
@@ -43,6 +51,8 @@ const Zoom = ({ userName, meetingId, password, clearInputs, sx }) => {
   };
 
   const joinMeeting = async () => {
+    let zoomMeetingSDK = document.getElementById("zmmtg-root");
+
     zoomMeetingSDK.style.display = "block";
     const jwt = await getSignature();
 
@@ -57,12 +67,12 @@ const Zoom = ({ userName, meetingId, password, clearInputs, sx }) => {
           userName: userName,
           success: (success) => {
             console.log(success);
+            clearInputs();
           },
           error: (error) => {
             console.log(error);
           },
         });
-        clearInputs();
       },
       error: (error) => {
         console.log(error);

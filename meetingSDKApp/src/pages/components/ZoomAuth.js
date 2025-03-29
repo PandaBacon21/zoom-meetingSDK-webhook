@@ -33,5 +33,5 @@ export default function ZoomAuth(updateZoomAuthState, zoomAuthCode) {
       }
     };
     sendAuthCode();
-  }, [navigate, zoomAuthCode, updateZoomAuthState]);
+  }, []);
 }
