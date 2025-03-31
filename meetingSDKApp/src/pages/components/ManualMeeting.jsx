@@ -30,8 +30,8 @@ export default function ManualMeeting() {
           borderRadius: 5,
         }}
       >
-        <Typography variant="h2" sx={{ fontWeight: "bold", marginBottom: 2 }}>
-          Meeting SDK Demo
+        <Typography variant="h3" sx={{ fontWeight: "bold", marginBottom: 2 }}>
+          Join Meeting Manually
         </Typography>
         <MeetingInput
           userName={userName}

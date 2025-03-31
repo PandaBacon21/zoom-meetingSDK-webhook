@@ -68,7 +68,7 @@ const Register = () => {
           sx={{
             padding: 4,
             margin: 2,
-            width: 600,
+            width: 700,
             minHeight: 600,
             // maxHeight: 300,
             textAlign: "center",
@@ -79,12 +79,35 @@ const Register = () => {
             alignItems: "center",
           }}
         >
-          <Typography
-            variant="h2"
-            sx={{ fontWeight: "bold", marginBottom: 2, marginRight: 3 }}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
           >
-            Register
-          </Typography>
+            <Typography
+              variant="h4"
+              sx={{
+                fontWeight: "bold",
+                marginBottom: 1,
+                marginRight: 3,
+                paddingBottom: 2,
+                borderBottom: "2px solid black",
+                display: "inline-block",
+              }}
+            >
+              Zoom Meeting SDK Example
+            </Typography>
+            <Typography
+              variant="h3"
+              sx={{ fontWeight: "bold", marginBottom: 2, marginRight: 3 }}
+            >
+              Register
+            </Typography>
+          </Box>
+
           <Paper
             sx={{
               width: 500,
@@ -93,13 +116,15 @@ const Register = () => {
               boxShadow: "inset 0px 2px 10px rgba(0, 0, 0, 0.1)",
               borderRadius: 2,
               textAlign: "center",
+              display: "flex",
+              flexDirection: "column",
             }}
           >
             <TextField
               id="email"
               label="Email"
               variant="filled"
-              sx={{ marginTop: 5 }}
+              sx={{ marginTop: 5, marginInline: 3 }}
               onChange={(e) => setEmail(e.target.value)}
             />
             <TextField
@@ -107,7 +132,7 @@ const Register = () => {
               label="Password"
               type="password"
               variant="filled"
-              sx={{ marginTop: 3 }}
+              sx={{ marginTop: 3, marginInline: 3 }}
               onChange={(e) => setPassword(e.target.value)}
             />
             <TextField
@@ -115,18 +140,18 @@ const Register = () => {
               label="Verify Password"
               type="password"
               variant="filled"
-              sx={{ marginTop: 3 }}
+              sx={{ marginTop: 3, marginInline: 3 }}
               onChange={(e) => setPasswordVerify(e.target.value)}
             />
             <Button
               variant="contained"
               size="large"
-              sx={{ marginTop: 3 }}
+              sx={{ marginTop: 3, marginInline: 7 }}
               onClick={registerUser}
             >
               Register
             </Button>
-            <Box sx={{ marginTop: 15 }}>
+            <Box sx={{ marginTop: 18 }}>
               <Link to="/login">Already Registered? Login Here!</Link>
             </Box>
           </Paper>

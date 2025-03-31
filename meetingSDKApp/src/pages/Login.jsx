@@ -88,7 +88,19 @@ const Login = () => {
             alignItems: "center",
           }}
         >
-          <Typography variant="h2" sx={{ fontWeight: "bold", marginBottom: 2 }}>
+          <Typography
+            variant="h4"
+            sx={{
+              fontWeight: "bold",
+              marginBottom: 1,
+              paddingBottom: 2,
+              borderBottom: "2px solid black",
+              display: "inline-block",
+            }}
+          >
+            Zoom Meeting SDK Example
+          </Typography>
+          <Typography variant="h3" sx={{ fontWeight: "bold", marginBottom: 1 }}>
             Login
           </Typography>
           <Paper
@@ -116,10 +128,15 @@ const Login = () => {
               sx={{ margin: 3 }}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <Button variant="contained" size="large" onClick={logInUser}>
+            <Button
+              variant="contained"
+              size="large"
+              onClick={logInUser}
+              sx={{ paddingInline: 10 }}
+            >
               Login
             </Button>
-            <Box sx={{ marginTop: 7 }}>
+            <Box sx={{ marginTop: 7, marginBottom: 1 }}>
               <Link to="/register">Not Registered? Sign Up Here!</Link>
             </Box>
           </Paper>

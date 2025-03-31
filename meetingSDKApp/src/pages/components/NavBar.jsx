@@ -5,7 +5,7 @@ export default function NavBar() {
   const { logout } = useAuth();
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexShrink: 0 }}>
       <AppBar position="static" sx={{ backgroundColor: "black" }}>
         <Toolbar>
           <Typography

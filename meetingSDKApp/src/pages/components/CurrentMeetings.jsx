@@ -104,7 +104,7 @@ export default function CurrentMeetings({ socket }) {
         alignItems: "center",
       }}
     >
-      <Typography variant="h2" sx={{ fontWeight: "bold", marginBottom: 2 }}>
+      <Typography variant="h3" sx={{ fontWeight: "bold", marginBottom: 2 }}>
         Current Active Meetings
       </Typography>
       <Paper
@@ -121,11 +121,16 @@ export default function CurrentMeetings({ socket }) {
       >
         {webhookData ? (
           <>
-            <Typography variant="h3">
-              {webhookData.payload.object.topic}
+            <Typography variant="h6" sx={{ marginTop: 3 }}>
+              {"New Meeting: " + webhookData.payload.object.topic}
             </Typography>
-            <Button variant="contained" size="large" onClick={joinMeeting}>
-              <Typography>Join Meeting</Typography>
+            <Button
+              sx={{ marginTop: 2 }}
+              variant="contained"
+              size="small"
+              onClick={joinMeeting}
+            >
+              <Typography variant="h6">Join Meeting</Typography>
             </Button>
           </>
         ) : null}
