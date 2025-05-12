@@ -98,7 +98,7 @@ const Register = () => {
                 display: "inline-block",
               }}
             >
-              Zoom Meeting SDK Example
+              Zoom Integration Example
             </Typography>
             <Typography
               variant="h3"

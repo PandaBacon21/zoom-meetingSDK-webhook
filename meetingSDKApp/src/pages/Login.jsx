@@ -98,7 +98,7 @@ const Login = () => {
               display: "inline-block",
             }}
           >
-            Zoom Meeting SDK Example
+            Zoom Integration Example
           </Typography>
           <Typography variant="h3" sx={{ fontWeight: "bold", marginBottom: 1 }}>
             Login

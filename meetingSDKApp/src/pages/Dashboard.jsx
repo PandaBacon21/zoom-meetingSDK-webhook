@@ -40,7 +40,7 @@ const Dashboard = () => {
           backgroundColor: "white",
           color: "black",
           textAlign: "center",
-          py: 4,
+          py: 2,
           borderBottom: "4px solid black",
         }}
       >
