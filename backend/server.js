@@ -28,7 +28,7 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: [
-      "http: //localhost:5173",
+      "http://localhost:5173",
       "https://pangolin-related-mildly.ngrok-free.app", // Ngrok URL
     ],
     credentials: true,
@@ -38,7 +38,7 @@ app.use(
 const io = new Server(server, {
   cors: {
     origin: [
-      "http: //localhost:5173",
+      "http://localhost:5173",
       "https://pangolin-related-mildly.ngrok-free.app", // Ngrok URL
     ],
     methods: ["GET", "POST"],
@@ -120,6 +120,7 @@ app.post("/api/zoom-auth-token", async (req, res) => {
       }
     } catch (e) {
       console.log(e.response);
+      return res.status(500).json({ status: "error", message: e.message });
     }
   }
 });
@@ -183,6 +184,7 @@ app.post("/api/get-webhook-meeting", async (req, res) => {
     res.status(200).send(meetingDetails);
   } catch (e) {
     console.log(e);
+    return res.status(500).json({ status: "error", message: e.message });
   }
 });
 

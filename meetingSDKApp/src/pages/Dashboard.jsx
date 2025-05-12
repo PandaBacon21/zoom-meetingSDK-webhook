@@ -8,6 +8,7 @@ import CurrentMeetings from "./components/CurrentMeetings";
 import GetZoomAuth from "./components/GetZoomAuth";
 import NavBar from "./components/NavBar";
 import { useZoomAuth } from "../context/ZoomContext";
+import SmartEmbed from "./components/SmartEmbed";
 
 const socket = io("http://localhost:3000/");
 
@@ -24,7 +25,14 @@ const Dashboard = () => {
   const { zoomAuthenticated } = useZoomAuth();
 
   return (
-    <Box sx={{ height: "100vh", display: "flex", flexDirection: "column" }}>
+    <Box
+      sx={{
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        overflow: "auto",
+      }}
+    >
       <NavBar />
       <Box
         sx={{
@@ -37,13 +45,12 @@ const Dashboard = () => {
         }}
       >
         <Grid2 container spacing={2} alignItems="center">
-          <Grid2 item size={{ xs: 8 }} sx={{ paddingLeft: 4 }}>
+          <Grid2 size={{ xs: 8 }} sx={{ paddingLeft: 4 }}>
             <Typography variant="h2" fontWeight="bold">
-              Zoom Meeting SDK and Webhook Sample
+              Zoom Integration Examples
             </Typography>
           </Grid2>
           <Grid2
-            item
             size={{ xs: 4 }}
             sx={{
               paddingInline: 4,
@@ -73,6 +80,24 @@ const Dashboard = () => {
               >
                 Zoom Meeting SDK Documentation
               </Link>
+              <Link
+                href="https://developers.zoom.us/docs/phone/smart-embed-guide/"
+                underline="none"
+                target="_blank"
+                rel="noopener"
+                sx={{ color: "black", "&:hover": { color: "grey" } }}
+              >
+                Zoom Smart Embed Documentation
+              </Link>
+              <Link
+                href="https://developers.zoom.us/docs/api/webhooks/ "
+                underline="none"
+                target="_blank"
+                rel="noopener"
+                sx={{ color: "black", "&:hover": { color: "grey" } }}
+              >
+                Zoom Webhook Documentation
+              </Link>
             </Stack>
           </Grid2>
         </Grid2>
@@ -82,17 +107,18 @@ const Dashboard = () => {
           display: "flex",
           flexDirection: "row",
           flexWrap: "wrap",
-          flex: 1,
           justifyContent: "center",
           alignItems: "center",
           gap: 5,
-          minHeight: 0,
+          overflow: "auto",
+          paddingBottom: 2,
         }}
       >
         {zoomAuthenticated ? (
           <>
             <ManualMeeting />
             <CurrentMeetings socket={socket} />
+            <SmartEmbed />
           </>
         ) : (
           <GetZoomAuth />
