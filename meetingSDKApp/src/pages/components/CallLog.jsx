@@ -42,7 +42,6 @@ export default function CallLog() {
 
   window.addEventListener("message", (e) => {
     const data = e.data;
-
     if (data) {
       switch (data.type) {
         case "zp-call-ringing-event":
